@@ -18,7 +18,7 @@ foreach (cot_getextplugins('usermanager.first') as $pl)
 }
 /* ===== */
 
-if (!in_array($a, array('add', 'details', 'edit', 'delete', 'reset', 'profile', 'register')))
+if (!in_array($a, array('add', 'details', 'edit', 'delete', 'reset', 'profile')))
 {
 	$a = 'main';}
 $t = new XTemplate(cot_tplfile(array('usermanager', $a), 'plug', true));

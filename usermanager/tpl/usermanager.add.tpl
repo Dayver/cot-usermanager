@@ -37,10 +37,6 @@
 						</td>
 					</tr>
 					<tr>
-						<td>{PHP.L.users_hideemail}</td>
-						<td>{USERMANAGER_HIDEEMAIL}</td>
-					</tr>
-					<tr>
 						<td>{PHP.L.Groupsmembership}:</td>
 						<td>{PHP.L.Maingroup}:<br />&nbsp;{PHP.out.img_down}<br />{USERMANAGER_GROUPS}</td>
 					</tr>

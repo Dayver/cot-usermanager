@@ -16,9 +16,10 @@
 		<div class="block">
 			<h3 class="users">
 				{USERMANAGER_TITLE}:
+				<a href="{USERMANAGER_URL_FOR_DELETED}" class="button confirmLink confirm">{PHP.L.Delete}</a>
 				<a href="{USERMANAGER_URL_FOR_RESET}" class="button confirm">{PHP.L.usermanager_reset_pass}</a>
 			</h3>
-			<form action="{USERMANAGER_SEND}" method="post" name="useredit" enctype="multipart/form-data" class="ajax">
+			<form action="{USERMANAGER_SEND}" method="post" name="useredit" enctype="multipart/form-data">
 				<input type="hidden" name="id" value="{USERMANAGER_ID}" />
 				<table class="cells">
 					<tr>
@@ -82,12 +83,15 @@
 						<td>{PHP.L.users_hideemail}:</td>
 						<td>{USERMANAGER_HIDEEMAIL}</td>
 					</tr>
+<!--//
+TODO: Need?
 <!-- IF {PHP.cot_modules.pm} -->
 					<tr>
 						<td>{PHP.L.users_pmnotify}:</td>
 						<td>{USERMANAGER_PMNOTIFY}<br />{PHP.themelang.usersedit.PMnotifyhint}</td>
 					</tr>
 <!-- ENDIF -->
+//-->
 					<tr>
 						<td>{PHP.L.Birthdate}:</td>
 						<td>{USERMANAGER_BIRTHDATE}</td>
@@ -115,10 +119,6 @@
 					<tr>
 						<td>{PHP.L.users_logcounter}:</td>
 						<td>{USERMANAGER_LOGCOUNT}</td>
-					</tr>
-					<tr>
-						<td>{PHP.L.users_deleteuser}:</td>
-						<td>{USERMANAGER_DELETE}</td>
 					</tr>
 					<tr>
 						<td colspan="2" class="valid"><button type="submit">{PHP.L.Update}</button></td>

@@ -47,35 +47,6 @@ if ($z == 'edit')
 	}
 	/* ===== */
 
-	$ruserdelete = cot_import('ruserdelete', 'P', 'BOL');
-	if ($ruserdelete)
-	{
-
-		$sql = $db->delete($db_users, "user_id=$id");
-		$sql = $db->delete($db_groups_users, "gru_userid=$id");
-
-		foreach($cot_extrafields[$db_users] as $exfld)
-		{
-			cot_extrafield_unlinkfiles($urr['user_'.$exfld['field_name']], $exfld);
-		}
-
-		if (cot_module_active('pfs') && cot_import('ruserdelpfs','P','BOL'))
-		{
-			require_once cot_incfile('pfs', 'module');
-			cot_pfs_deleteall($id);
-		}
-
-		/* === Hook === */
-		foreach (cot_getextplugins('usermanager.update.delete') as $pl)
-		{
-			include $pl;
-		}
-		/* ===== */
-
-		cot_log("Deleted user #".$id,'adm');
-		cot_redirect(cot_url('message', "msg=109&rc=200&id=".$id, '', true));
-	}
-
 	$ruser['user_name'] = cot_import('rusername', 'P', 'TXT');
 	$ruser['user_maingrp'] = cot_import('rusermaingrp', 'P', 'INT');
 	$ruser['user_banexpire'] = cot_import('ruserbanexpire', 'P', 'INT');
@@ -227,11 +198,7 @@ if ($z == 'edit')
 
 		cot_auth_clear($id);
 		cot_log("Edited user #".$id,'adm');
-		cot_redirect(cot_url('users', "m=edit&id=".$id, '', true));
-	}
-	else
-	{
-		cot_redirect(cot_url('users', "m=edit&id=$id", '', true));
+		cot_message($L['msg106_title']);
 	}
 }
 
@@ -253,10 +220,13 @@ $delete_pfs = cot_module_active('pfs') ? cot_checkbox(false, 'ruserdelpfs', $L['
 
 $t->assign(array(
 	'USERMANAGER_TITLE' => cot_breadcrumbs(array(array(cot_url('users', 'm=details&id='.$urr['user_id'].'&u='.$urr['user_name']), $urr['user_name'])), false),
+	'USERMANAGER_URL_FOR_DELETED' => cot_confirm_url(cot_url('admin', $common_params.'&a=delete&id='.$urr['user_id'].'&d='.$durl.'&'.cot_xg()), 'user', 'user_confirm_delete'),
+	'USERMANAGER_URL_FOR_EDIT' => cot_url('admin', $common_params.'&a=edit&id='.$urr['user_id']),
+	'USERMANAGER_URL_FOR_RESET' => cot_confirm_url(cot_url('admin', $common_params.'&a=reset&id='.$urr['user_id'].'&d='.$durl.'&'.cot_xg()), 'user', 'user_confirm_reset'),
 	'USERMANAGER_DETAILSLINK' => cot_url('users', 'm=details&id='.$urr['user_id']),
 	'USERMANAGER_EDITLINK' => cot_url('users', 'm=edit&id='.$urr['user_id']),
 	'USERMANAGER_SUBTITLE' => $L['useed_subtitle'],
-	'USERMANAGER_SEND' => cot_url('users', 'm=edit&a=update&'.cot_xg().'&id='.$urr['user_id']),
+	'USERMANAGER_SEND' => cot_url('admin', $common_params.'&a=edit&z=edit&'.cot_xg().'&id='.$urr['user_id']),
 	'USERMANAGER_ID' => $urr['user_id'],
 	'USERMANAGER_NAME' => cot_inputbox('text', 'rusername', $urr['user_name'], array('size' => 32, 'maxlength' => 100) + $protected),
 	'USERMANAGER_ACTIVE' => $user_form_active,
@@ -279,7 +249,6 @@ $t->assign(array(
 	'USERMANAGER_LASTLOG_STAMP' => $urr['user_lastlog'],
 	'USERMANAGER_LOGCOUNT' => $urr['user_logcount'],
 	'USERMANAGER_LASTIP' => cot_build_ipsearch($urr['user_lastip']),
-	'USERMANAGER_DELETE' => ($sys['user_istopadmin']) ? cot_radiobox(0, 'ruserdelete', array(1, 0), array($L['Yes'], $L['No'])) . $delete_pfs : $L['na'],
 ));
 
 // Extra fields

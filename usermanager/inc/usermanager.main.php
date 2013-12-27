@@ -19,6 +19,115 @@ foreach (cot_getextplugins('usermanager.main.first') as $pl)
 }
 /* ===== */
 
+if (cot_import('a', 'G', 'ALP') == 'update_checked')
+{
+	$paction = cot_import('paction', 'P', 'TXT');	if ($paction == $L['Delete'] && is_array($_POST['s']))
+	{		cot_check_xp();
+		$s = cot_import('s', 'P', 'ARR');
+
+		$i = 0;
+		foreach ($s as $id => $v)
+		{
+			/* === Hook === */
+			foreach (cot_getextplugins('usermanager.delete.first') as $pl)
+			{
+				include $pl;
+			}
+			/* ===== */
+
+			$sql = $db->query("SELECT * FROM $db_users WHERE user_id = $id");
+			if ($sql->rowCount() == 0)
+			{				cot_message($id.' - '.$L['Error']);			}
+			else
+			{
+				$urr = $sql->fetch();
+
+				$sql = $db->delete($db_users, "user_id=$id");
+				$sql = $db->delete($db_groups_users, "gru_userid=$id");
+
+				foreach($cot_extrafields[$db_users] as $exfld)
+				{
+					cot_extrafield_unlinkfiles($urr['user_'.$exfld['field_name']], $exfld);
+				}
+
+				if (cot_module_active('pfs') && cot_import('ruserdelpfs', 'R', 'BOL'))
+				{
+					require_once cot_incfile('pfs', 'module');
+					cot_pfs_deleteall($id);
+				}
+
+				/* === Hook === */
+				foreach (cot_getextplugins('usermanager.delete.done') as $pl)
+				{
+					include $pl;
+				}
+				/* ===== */
+
+				cot_log("Deleted user #".$id,'adm');
+				cot_message($L['usermanager_delete_user_ok'].' (id = '.$id.')');
+				$i++;
+			}
+		}
+	}
+	elseif ($paction == $L['usermanager_reset_pass'] && is_array($_POST['s']))
+	{		cot_check_xp();
+		$s = cot_import('s', 'P', 'ARR');
+
+		$i = 0;
+		foreach($s as $id => $v)
+		{			/* === Hook === */
+			foreach (cot_getextplugins('usermanager.reset.first') as $pl)
+			{
+				include $pl;
+			}
+			/* ===== */
+
+			$sql = $db->query("SELECT user_id, user_name, user_lostpass FROM $db_users WHERE user_id=".$id);
+			$email_found= FALSE;
+			while ($row = $sql->fetch())
+			{
+				$rusername = $row['user_name'];
+				$ruserid = $row['user_id'];
+				$validationkey = $row['user_lostpass'];
+
+				if (empty($validationkey) || $validationkey == "0")
+				{
+					$validationkey = md5(microtime());
+					$sql = $db->update($db_users, array('user_lostpass' => $validationkey, 'user_lastip' => $usr['ip']), "user_id=$ruserid");
+				}
+
+				/* === Hook === */
+				foreach (cot_getextplugins('usermanager.reset.main') as $pl)
+				{
+					include $pl;
+				}
+				/* ===== */
+
+				$rsubject = $L['pasrec_title'];
+				$ractivate = $cfg['mainurl'].'/'.cot_url('users', 'm=passrecover&a=auth&v='.$validationkey, '', true);
+				$rbody = sprintf($L['pasrec_email1'], $rusername, $ractivate, $usr['ip'], cot_date('datetime_medium'));
+				$rbody .= "\n\n ".$L['aut_contactadmin'];
+				cot_mail($row['user_email'], $rsubject, $rbody);
+				$email_found = TRUE;
+				if (!$cfg['useremailduplicate']) break;
+			}
+			if ($email_found)
+			{
+				/* === Hook === */
+				foreach (cot_getextplugins('usermanager.reset.done') as $pl)
+				{
+					include $pl;
+				}
+				/* ===== */
+
+				cot_message($L['usermanager_reset_user_send_email'].' (id = '.$id.')');
+			}
+			else
+			{
+				cot_error($L['nf'], 'user_id');
+			}		}
+	}}
+
 list($pg, $d, $durl) = cot_import_pagenav('d', $cfg['users']['maxusersperpage']);
 
 if ($filter == 'all')

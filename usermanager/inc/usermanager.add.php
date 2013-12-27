@@ -57,11 +57,9 @@ if ($z == 'add')
 	$ruser['user_maingrp'] = cot_import('rusermaingrp', 'P', 'INT');
 	$ruser['user_banexpire'] = cot_import('ruserbanexpire', 'P', 'INT');
 	$ruser['user_text'] = cot_import('rusertext', 'P', 'HTM');
-	$ruser['user_hideemail'] = cot_import('ruserhideemail', 'P', 'INT');
 	$ruser['user_theme'] = cot_import('rusertheme', 'P', 'TXT');
 	$ruser['user_lang'] = cot_import('ruserlang', 'P', 'ALP');
 
-	$rusergroupsms = cot_import('rusergroupsms', 'P', 'ARR');
 	if (mb_strlen($ruser['user_name']) < 2 || mb_strpos($ruser['user_name'], ',') !== false || mb_strpos($ruser['user_name'], "'") !== false)
 	{
 		cot_error('aut_usernametooshort', 'rusername');
@@ -104,7 +102,19 @@ if ($z == 'add')
 	if (!cot_error_found())
 	{
 		$ruser['user_password'] = $rpassword1;
-		$userid = cot_add_user($ruser);
+		$userid = cot_add_user($ruser, null, null, null, !$cfg['plugin']['usermanager']['useremailverif'] ? $ruser['user_maingrp'] ? $ruser['user_maingrp'] : 4 : null);
+
+		$rusergroupsms = cot_import('rusergroupsms', 'P', 'ARR');
+		if (is_array($rusergroupsms))
+		{
+			foreach($cot_groups as $k => $i)
+			{
+				if (isset($rusergroupsms[$k]))
+				{
+					$db->insert($db_groups_users, array('gru_userid' => (int)$userid, 'gru_groupid' => (int)$k));
+				}
+			}
+		}
 
 		/* === Hook for the plugins === */
 		foreach (cot_getextplugins('usermanager.add.add.done') as $pl)

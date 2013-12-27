@@ -13,6 +13,13 @@ $id = cot_import('id', 'G', 'INT');
 
 cot_check_xg();
 
+/* === Hook === */
+foreach (cot_getextplugins('usermanager.reset.first') as $pl)
+{
+	include $pl;
+}
+/* ===== */
+
 $sql = $db->query("SELECT user_id, user_name, user_lostpass FROM $db_users WHERE user_id=".$id);
 $email_found= FALSE;
 while ($row = $sql->fetch())
@@ -27,6 +34,13 @@ while ($row = $sql->fetch())
 		$sql = $db->update($db_users, array('user_lostpass' => $validationkey, 'user_lastip' => $usr['ip']), "user_id=$ruserid");
 	}
 
+	/* === Hook === */
+	foreach (cot_getextplugins('usermanager.reset.main') as $pl)
+	{
+		include $pl;
+	}
+	/* ===== */
+
 	$rsubject = $L['pasrec_title'];
 	$ractivate = $cfg['mainurl'].'/'.cot_url('users', 'm=passrecover&a=auth&v='.$validationkey, '', true);
 	$rbody = sprintf($L['pasrec_email1'], $rusername, $ractivate, $usr['ip'], cot_date('datetime_medium'));
@@ -37,6 +51,13 @@ while ($row = $sql->fetch())
 }
 if ($email_found)
 {
+	/* === Hook === */
+	foreach (cot_getextplugins('usermanager.reset.done') as $pl)
+	{
+		include $pl;
+	}
+	/* ===== */
+
 	cot_message($L['usermanager_reset_user_send_email']);
 	cot_redirect(cot_url('admin', $common_params.'&a=main&d='.$durl, '', true));
 }

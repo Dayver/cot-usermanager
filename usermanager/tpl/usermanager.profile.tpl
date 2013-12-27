@@ -15,8 +15,9 @@
 		<div class="block">
 			<h3>
 				{USERMANAGER_TITLE}:
+				<a href="{USERMANAGER_URL_FOR_RESET}" class="button confirm">{PHP.L.usermanager_reset_pass}</a>
 			</h3>
-			<form action="{USERMANAGER_FORM_SEND}" method="post" enctype="multipart/form-data" name="profile" class="ajax">
+			<form action="{USERMANAGER_SEND}" method="post" enctype="multipart/form-data" name="profile">
 				<input type="hidden" name="userid" value="{USERMANAGER_ID}" />
 				<table class="cells">
 					<tr>
@@ -63,6 +64,8 @@
 						<td>{PHP.L.users_hideemail}:</td>
 						<td>{USERMANAGER_HIDEEMAIL}</td>
 					</tr>
+<!--//
+TODO: Need?
 <!-- IF {PHP.cot_modules.pm} -->
 					<tr>
 						<td>{PHP.L.users_pmnotify}:</td>
@@ -72,6 +75,7 @@
 						</td>
 					</tr>
 <!-- ENDIF -->
+//-->
 					<tr>
 						<td>{PHP.L.Theme}:</td>
 						<td>{USERMANAGER_THEME}</td>

@@ -26,12 +26,12 @@ $sql = $db->query("SELECT * FROM $db_users WHERE user_id='".$usr['id']."' LIMIT 
 cot_die($sql->rowCount()==0);
 $urr = $sql->fetch();
 
-if($z == 'update')
+if($z == 'profile')
 {
 	cot_check_xg();
 
 	/* === Hook === */
-	foreach (cot_getextplugins('users.profile.update.first') as $pl)
+	foreach (cot_getextplugins('usermanager.profile.update.first') as $pl)
 	{
 		include $pl;
 	}
@@ -134,6 +134,7 @@ if($z == 'update')
 			else
 			{
 				$db->update($db_users, array('user_email' => $ruseremail), "user_id='".$usr['id']."'");
+				cot_message($L['msg106_title']);
 			}
 		}
 	}
@@ -145,12 +146,12 @@ if($z == 'update')
 		cot_extrafield_movefiles();
 
 		/* === Hook === */
-		foreach (cot_getextplugins('users.profile.update.done') as $pl)
+		foreach (cot_getextplugins('usermanager.profile.update.done') as $pl)
 		{
 			include $pl;
 		}
 		/* ===== */
-		cot_redirect(cot_url('users', 'm=profile', '', true));
+		cot_message($L['msg106_title']);
 	}
 }
 
@@ -173,8 +174,7 @@ $t->assign(array(
 	'USERMANAGER_TITLE' => cot_rc_link(cot_url('users', 'm=profile'), $L['pro_title']),
 	'USERMANAGER_SUBTITLE' => $L['pro_subtitle'],
 	'USERMANAGER_DETAILSLINK' => cot_url('users', 'm=details&id='.$urr['user_id']),
-	'USERMANAGER_EDITLINK' => cot_url('users', 'm=edit&id='.$urr['user_id']),
-	'USERMANAGER_FORM_SEND' => cot_url('users', "m=profile&a=update&".cot_xg()),
+	'USERMANAGER_SEND' => cot_url('admin', $common_params.'&a=profile&z=profile&'.cot_xg()),
 	'USERMANAGER_ID' => $urr['user_id'],
 	'USERMANAGER_NAME' => htmlspecialchars($urr['user_name']),
 	'USERMANAGER_MAINGRP' => cot_build_group($urr['user_maingrp']),

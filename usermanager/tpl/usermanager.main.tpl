@@ -27,7 +27,7 @@
 		<!-- ENDIF -->
 		<div class="block">
 			<h3>{PHP.L.Users}:</h3>
-			<form id="form_valqueue" name="form_valqueue" method="post" action="{USERMANAGER_FORM_URL}" class="ajax">
+			<form id="form_valqueue" name="form_valqueue" method="post" action="{USERMANAGER_FORM_URL}">
 			<table class="cells">
 				<tr>
 					<td class="right" colspan="<!-- IF {PHP.cot_modules.pm} -->9<!-- ELSE -->8<!-- ENDIF -->">
@@ -149,9 +149,9 @@
 							<!-- ENDIF -->
 
 <!--//
-êîììåíòû þçâåðÿ
-ÏÔÑ þçâåðÿ
-ïåéäæè þçâåðÿ
+ÐºÐ¾Ð¼Ð¼ÐµÐ½Ñ‚Ñ‹ ÑŽÐ·Ð²ÐµÑ€Ñ
+ÐŸÐ¤Ð¡ ÑŽÐ·Ð²ÐµÑ€Ñ
+Ð¿ÐµÐ¹Ð´Ð¶Ð¸ ÑŽÐ·Ð²ÐµÑ€Ñ
 ...
 //-->
 

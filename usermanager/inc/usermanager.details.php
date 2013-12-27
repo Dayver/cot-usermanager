@@ -38,7 +38,7 @@ $t->assign(cot_generate_usertags($urr['user_id'], 'USERMANAGER_', '', TRUE), htm
 $t->assign(array(
 	'USERMANAGER_TITLE' => cot_breadcrumbs(array(array(cot_url('users', 'm=details&id='.$urr['user_id'].'&u='.$urr['user_name']), $urr['user_name'])), false),
 	'USERMANAGER_URL_FOR_DELETED' => cot_confirm_url(cot_url('admin', $common_params.'&a=delete&id='.$urr['user_id'].'&d='.$durl.'&'.cot_xg()), 'user', 'user_confirm_delete'),
-	'USERMANAGER_URL_FOR_EDIT' => cot_url('admin', 'm=other&p=usermanager&a=edit&id='.$urr['user_id']),
+	'USERMANAGER_URL_FOR_EDIT' => cot_url('admin', $common_params.'&a=edit&id='.$urr['user_id']),
 	'USERMANAGER_URL_FOR_RESET' => cot_confirm_url(cot_url('admin', $common_params.'&a=reset&id='.$urr['user_id'].'&d='.$durl.'&'.cot_xg()), 'user', 'user_confirm_reset'),
 ));
 
