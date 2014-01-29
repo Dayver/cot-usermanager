@@ -1,17 +1,11 @@
 <!-- BEGIN: MAIN -->
 			<div class="row-fluid">
-				<div class="block">
-					<h5><i class="icon-group"></i> {PHP.L.usermanager_profile_title}</h5>
+			<div class="col-md-12">
 {FILE "{PHP.cfg.themes_dir}/admin/{PHP.cfg.admintheme}/warnings.tpl"}
-					<div class="btn-group">
-						<a title="{PHP.L.Configuration}" href="{USERMANAGER_CONFIG_URL}" class="btn btn-primary">{PHP.L.Configuration}</a>
-						<a title="{PHP.L.Configuration}" href="{USERMANAGER_RIGHTS_URL}" class="btn btn-primary">{PHP.L.Rights}</a>
-						<a href="{USERMANAGER_EXTRAFIELDS_URL}" class="btn btn-primary">{PHP.L.adm_extrafields}</a>
-						<a href="{USERMANAGER_GROUPS_URL}" class="btn btn-primary">{PHP.L.Groups}</a>
-						<a href="{USERMANAGER_USER_URL}" class="btn btn-primary">{PHP.L.Users}</a>
-						<a href="{USERMANAGER_ADD_URL}" class="btn btn-primary">{PHP.L.usermanager_add_user}</a>
-					</div>
-
+				<div class="block">
+					<h5><i class="fa fa-user"></i> {PHP.L.usermanager_profile_title}</h5>
+					<div class="wrapper">
+{FILE "{PHP.cfg.plugins_dir}/usermanager/tpl/nav.inc.tpl"}
 <!-- BEGIN: USERMANAGER_PROFILE -->
 					<form action="{USERMANAGER_SEND}" method="post" enctype="multipart/form-data" name="profile">
 						<input type="hidden" name="userid" value="{USERMANAGER_ID}" />
@@ -23,7 +17,7 @@
 							<tr>
 								<td>{PHP.L.Groupsmembership}:</td>
 								<td>
-									<div id="usergrouplist">
+									<div class="usergrouplist">
 										{USERMANAGER_GROUPS}
 									</div>
 								</td>
@@ -126,9 +120,13 @@ TODO: Need?
 								</td>
 							</tr>
 							<tr>
-								<td colspan="2" class="valid"><button type="submit" class="btn btn-primary">{PHP.L.Update}</button></td>
+								<td colspan="2" class="valid"><button type="submit" class="btn btn-success"><i class="fa fa-refresh"></i> {PHP.L.Update}</button></td>
 							</tr>
 						</table>
 					</form>
 <!-- END: USERMANAGER_PROFILE -->
+			</div>
+			</div>
+			</div>
+			</div>
 <!-- END: MAIN -->

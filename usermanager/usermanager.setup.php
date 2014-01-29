@@ -1,6 +1,7 @@
 <?php
 /* ====================
 [BEGIN_COT_EXT]
+Code=usermanager
 Name=User manager
 Category=administration-management
 Description=User manager

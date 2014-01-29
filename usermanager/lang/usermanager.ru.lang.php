@@ -33,13 +33,13 @@ $L['usermanager_delete_user_ok'] = 'Пользователь удален';
 $L['usermanager_reset_user_send_email'] = 'Пользователю направлен e-mail для его сброса пароля';
 
 $L['usermanager_details_title'] = 'Информация о пользователе';
-$L['usermanager_details_help'] = 'Справка еще не написана для этой страницы плагина!';
+$L['usermanager_details_help'] = 'Простой вывод данных о пользователе';
 
 $L['usermanager_edit_title'] = 'Редактирование пользователя';
-$L['usermanager_edit_help'] = 'Справка еще не написана для этой страницы плагина!';
+$L['usermanager_edit_help'] = 'Редактирование данных о пользователе';
 
 $L['usermanager_profile_title'] = 'Профиль пользователя';
-$L['usermanager_profilet_help'] = 'Справка еще не написана для этой страницы плагина!';
+$L['usermanager_profilet_help'] = 'Редактирование собственных пользовательских данных';
 
 /**
  * Plugin Body
