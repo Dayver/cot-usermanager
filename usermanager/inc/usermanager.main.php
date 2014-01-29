@@ -20,9 +20,12 @@ foreach (cot_getextplugins('usermanager.main.first') as $pl)
 /* ===== */
 
 if (cot_import('a', 'G', 'ALP') == 'update_checked')
-{
-	$paction = cot_import('paction', 'P', 'TXT');	if ($paction == $L['Delete'] && is_array($_POST['s']))
-	{		cot_check_xp();
+{
+
+	$paction = cot_import('paction', 'P', 'TXT');
+	if ($paction == $L['Delete'] && is_array($_POST['s']))
+	{
+		cot_check_xp();
 		$s = cot_import('s', 'P', 'ARR');
 
 		$i = 0;
@@ -37,7 +40,9 @@ if (cot_import('a', 'G', 'ALP') == 'update_checked')
 
 			$sql = $db->query("SELECT * FROM $db_users WHERE user_id = $id");
 			if ($sql->rowCount() == 0)
-			{				cot_message($id.' - '.$L['Error']);			}
+			{
+				cot_message($id.' - '.$L['Error']);
+			}
 			else
 			{
 				$urr = $sql->fetch();
@@ -70,12 +75,14 @@ if (cot_import('a', 'G', 'ALP') == 'update_checked')
 		}
 	}
 	elseif ($paction == $L['usermanager_reset_pass'] && is_array($_POST['s']))
-	{		cot_check_xp();
+	{
+		cot_check_xp();
 		$s = cot_import('s', 'P', 'ARR');
 
 		$i = 0;
 		foreach($s as $id => $v)
-		{			/* === Hook === */
+		{
+			/* === Hook === */
 			foreach (cot_getextplugins('usermanager.reset.first') as $pl)
 			{
 				include $pl;
@@ -125,8 +132,10 @@ if (cot_import('a', 'G', 'ALP') == 'update_checked')
 			else
 			{
 				cot_error($L['nf'], 'user_id');
-			}		}
-	}}
+			}
+		}
+	}
+}
 
 list($pg, $d, $durl) = cot_import_pagenav('d', $cfg['users']['maxusersperpage']);
 
@@ -140,7 +149,10 @@ elseif ($filter == 'expired')
 	$sqlwhere = "user_begin > {$sys['now']} OR (user_expire <> 0 AND user_expire < {$sys['now']})";
 }*/
 else
-{	$grp_id = mb_substr($filter, 4);	if ($grp_id > 0) $sqlwhere = "user_maingrp = ".$db->prep($grp_id)." ";}
+{
+	$grp_id = mb_substr($filter, 4);
+	if ($grp_id > 0) $sqlwhere = "user_maingrp = ".$db->prep($grp_id)." ";
+}
 
 /* === Hook === */
 foreach (cot_getextplugins('usermanager.main.main') as $pl)
@@ -213,6 +225,7 @@ $t->parse('MAIN.USERMANAGER_DEFAULT');
 
 $t->assign(array(
 	'USERMANAGER_ADD_FORM_URL' => cot_url('admin', $common_params.'&a=add&z=add&d='.$durl),
+	'USERMANAGER_USER_URL' => cot_url('admin', $common_params.'&d='.$durl),
 	'USERMANAGER_NAME' => cot_inputbox('text', 'rusername', $ruser['user_name'], array('size' => 24, 'maxlength' => 100)),
 	'USERMANAGER_EMAIL' => cot_inputbox('text', 'ruseremail', $ruser['user_email'], array('size' => 24, 'maxlength' => 64)),
 	'USERMANAGER_PASSWORD' => cot_inputbox('password', 'rpassword1', '', array('size' => 12, 'maxlength' => 32)),
