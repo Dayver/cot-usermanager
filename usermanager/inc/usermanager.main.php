@@ -162,14 +162,14 @@ foreach (cot_getextplugins('usermanager.main.main') as $pl)
 /* ===== */
 
 $totalitems = $db->query("SELECT COUNT(*) FROM $db_users WHERE ".$sqlwhere)->fetchColumn();
-$pagenav = cot_pagenav('admin', $common_params, $d, $totalitems, $cfg['maxrowsperpage'], 'd', '', $cfg['jquery'] && $cfg['turnajax']);
+$pagenav = cot_pagenav('admin', $common_params, $d, $totalitems, $cfg['users']['maxusersperpage'], 'd', '', $cfg['jquery'] && $cfg['turnajax']);
 
 $sql_users = $db->query("SELECT u.*, g.*
 	FROM $db_users as u
 	LEFT JOIN $db_groups as g ON g.grp_id=u.user_maingrp
 	WHERE $sqlwhere
 		ORDER BY $sqlsorttype $sqlsortway
-		LIMIT $d, ".$cfg['maxrowsperpage']);
+		LIMIT $d, ".$cfg['users']['maxusersperpage']);
 
 $ii = 0;
 /* === Hook - Part1 : Set === */
